@@ -1,6 +1,6 @@
 Run using following command 
 
-```docker run -p 8888:8888 -t prabeeshk/pyspark-notebook```
+```docker run -d -p 8888:8888 -t prabeeshk/pyspark-notebook```
 
 Visit 
 
