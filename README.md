@@ -1,7 +1,18 @@
-Run using following command 
+Run your docker with `docker-compose`. It helps to keep your arguments/settings in a single file and run together in an isolated environment.
 
-```docker run -d -p 8888:8888 -t prabeeshk/pyspark-notebook```
+Install `docker-compose`
+```Python
+pip install -U docker-compose
+```
 
-Visit 
+To start your apllication. Run following command 
+```shell
+docker-compose up -d
+```
 
-http://127.0.0.1:8888
+Visit ```http://127.0.0.1:8888```
+
+To stop the service 
+```shell
+docker-compose stop
+```
