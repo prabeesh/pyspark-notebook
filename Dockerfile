@@ -2,25 +2,30 @@ FROM ubuntu:trusty
 
 MAINTAINER Prabeesh K.
 
-RUN echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" > /etc/apt/sources.list.d/webupd8team-java.list
-RUN echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" >> /etc/apt/sources.list.d/webupd8team-java.list
-RUN apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886
-    
-RUN apt-get -y update 
+RUN \
+    apt-get -y update &&\
+    echo "deb http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" > /etc/apt/sources.list.d/webupd8team-java.list &&\
+    echo "deb-src http://ppa.launchpad.net/webupd8team/java/ubuntu precise main" >> /etc/apt/sources.list.d/webupd8team-java.list &&\
+    apt-key adv --keyserver keyserver.ubuntu.com --recv-keys EEA14886 &&\
+    apt-get -y update &&\
+    echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections &&\
+    apt-get install -y oracle-java7-installer &&\
+    apt-get install -y curl
 
-RUN echo oracle-java7-installer shared/accepted-oracle-license-v1-1 select true | /usr/bin/debconf-set-selections
-RUN apt-get install -y oracle-java7-installer
+ENV SPARK_VERSION 1.4.0
+ENV SPARK_HOME /usr/local/src/spark-$SPARK_VERSION
 
-RUN apt-get install -y curl
+RUN \
+    mkdir -p $SPARK_HOME &&\
+    curl -s http://d3kbcqa49mib13.cloudfront.net/spark-$SPARK_VERSION.tgz | tar -xz -C $SPARK_HOME --strip-components=1 &&\
+    cd $SPARK_HOME \
+    build/mvn -DskipTests clean package
 
-RUN curl -s http://d3kbcqa49mib13.cloudfront.net/spark-1.4.0.tgz | tar -xz -C /usr/local/src/
-
-RUN cd /usr/local/src/spark-1.4.0/ ; build/mvn -DskipTests clean package
-
-ENV SPARK_HOME /usr/local/src/spark-1.4.0/
 ENV PYTHONPATH $SPARK_HOME/python/:$PYTHONPATH
 
-RUN apt-get install -y python \
+RUN apt-get install -y build-essential \
+    python \
+    python-dev \
     python-pip \
     python-zmq
 
