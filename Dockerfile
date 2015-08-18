@@ -30,7 +30,7 @@ RUN apt-get install -y build-essential \
     python-zmq
 
 RUN pip install py4j \
-    ipython[notebook] \
+    ipython[notebook]==3.2 \
     jsonschema \
     jinja2 \
     terminado \
