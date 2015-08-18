@@ -18,7 +18,7 @@ ENV SPARK_HOME /usr/local/src/spark-$SPARK_VERSION
 RUN \
     mkdir -p $SPARK_HOME &&\
     curl -s http://d3kbcqa49mib13.cloudfront.net/spark-$SPARK_VERSION.tgz | tar -xz -C $SPARK_HOME --strip-components=1 &&\
-    cd $SPARK_HOME \
+    cd $SPARK_HOME &&\
     build/mvn -DskipTests clean package
 
 ENV PYTHONPATH $SPARK_HOME/python/:$PYTHONPATH
